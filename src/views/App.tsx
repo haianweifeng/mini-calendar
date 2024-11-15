@@ -4,6 +4,7 @@ import MiniCalendar from './MiniCalendar';
 import dayjs, { Dayjs } from 'dayjs';
 import Modal from '@/components/Modal';
 
+const FORMAT = 'YYYY-MM-DD';
 function App() {
   const [checked, setChecked] = useState<boolean>(true);
   const [markedDays, setMarkedDays] = useState<Dayjs[]>([dayjs('2024-11-12')]);
@@ -19,7 +20,7 @@ function App() {
 
   const handleClick = (date: Dayjs) => {
     if (checked) {
-      tempMarkedDay.current = date.format('YYYY-MM-DD');
+      tempMarkedDay.current = date.format(FORMAT);
       setOpen(true);
     }
   };
@@ -37,9 +38,8 @@ function App() {
       const markedInfo = {
         [tempMarkedDay.current!]: textareaRef.current!.value,
       };
-      setMarkedDays((prev) => {
-        return [...prev, dayjs(tempMarkedDay.current!)];
-      });
+      const newMarkedDays = [...markedDays, dayjs(tempMarkedDay.current!)];
+      setMarkedDays(newMarkedDays);
       setMarkedInfos((prev) => {
         return {
           ...prev,
@@ -54,8 +54,22 @@ function App() {
     <div>
       <label>
         <input type="checkbox" checked={checked} onChange={handleChange} />
-        <span className="pl-2">开启Modal标记事件</span>
+        <span className="pl-2 text-sm">开启Modal标记事件</span>
       </label>
+      <div className="flex items-center justify-center text-sm mt-2">
+        <div className="flex items-center justify-center mr-2">
+          <span className="inline-block w-4 h-4 rounded-[50%] bg-[#1677ff] mr-1"></span>
+          <span>选中</span>
+        </div>
+        <div className="flex items-center justify-center mr-2">
+          <span className="inline-block w-4 h-4 rounded-[50%] bg-[#ff4d4f] mr-1"></span>
+          <span>标记</span>
+        </div>
+        <div className="flex items-center justify-center">
+          <span className="inline-block w-4 h-4 rounded-[50%] border border-[#1677ff] solid mr-1"></span>
+          <span>今天</span>
+        </div>
+      </div>
       <div className="mt-3">
         <MiniCalendar
           markedDays={markedDays}

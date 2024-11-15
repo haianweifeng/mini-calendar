@@ -9,10 +9,9 @@ interface SelectProps {
 }
 const StyledDiv = styled.div`
   position: relative;
-  color: rgba(0, 0, 0, 0.88);
-  height: 32px;
-  width: 100px;
-  font-size: 14px;
+  color: var(--color-text);
+  /* height: 32px; */
+  /* width: 100px; */
   &:after {
     display: inline-block;
     content: '>';
@@ -21,17 +20,18 @@ const StyledDiv = styled.div`
     top: 50%;
     transform: translateY(-50%) rotate(90deg);
     pointer-events: none;
-    font-size: 12px;
+    color: #9195a3;
+    /* font-size: 12px; */
   }
 `;
 
 const SelectedDiv = styled.div`
   width: 100%;
   height: 100%;
-  padding: 0 12px;
+  /* padding: 0 12px; */
   background-color: #fff;
   cursor: pointer;
-  border: 1px solid #d9d9d9;
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -42,7 +42,7 @@ const StyledUl = styled.ul`
   position: absolute;
   width: 100%;
   background-color: #fff;
-  border: 1px solid #d9d9d9;
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   margin-top: 2px;
   z-index: 1;
@@ -61,7 +61,7 @@ const StyledUl = styled.ul`
 `;
 
 const StyledLi = styled.li`
-  padding: 5px 10px;
+  /* padding: 5px 10px; */
   cursor: pointer;
 
   &.active {
@@ -77,8 +77,9 @@ const StyledLi = styled.li`
 const Select = (props: SelectProps) => {
   const { value, options, className = '', onChange } = props;
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const ulRef = useRef<HTMLUListElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const ulRef = useRef<HTMLUListElement | null>(null);
+  const selectedItemRef = useRef<HTMLLIElement | null>(null);
 
   const handleClick = () => {
     if (ulRef.current) {
@@ -117,20 +118,38 @@ const Select = (props: SelectProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (ulRef.current && selectedItemRef.current) {
+      selectedItemRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [value]);
+
   const formatSelectedValue = useMemo(() => {
     const item = options.find((item) => item.value === value);
     return item?.label ?? '请选择';
   }, [value, options]);
 
   return (
-    <StyledDiv className={className} ref={containerRef}>
-      <SelectedDiv onClick={handleClick}>{formatSelectedValue}</SelectedDiv>
+    <StyledDiv
+      className={`xl:text-xl lg:text-lg md:text-base text-sm ${className}`}
+      ref={containerRef}
+    >
+      <SelectedDiv
+        className="xl:py-2 xl:pl-4 xl:pr-10 lg:py-[6px] lg:pl-4 lg:pr-8 md:py-1 md:pl-3 md:pr-6 py-1 pl-2 pr-6"
+        onClick={handleClick}
+      >
+        {formatSelectedValue}
+      </SelectedDiv>
       <StyledUl ref={ulRef}>
         {options.map((item) => {
           return (
             <StyledLi
               key={item.value}
-              className={`${item.value === value ? 'active' : ''}`}
+              ref={item.value === value ? selectedItemRef : null}
+              className={`xl:py-2 xl:px-4 lg:py-[6px] lg:px-3 md:py-1 md:px-2 py-1 px-2 ${item.value === value ? 'active' : ''}`}
               onClick={() => handleItemClick(item.value)}
             >
               {item.label}

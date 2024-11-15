@@ -17,16 +17,26 @@ const StyledDiv = styled.div`
     top: 0;
     bottom: 0;
     margin: auto;
-    width: 28px;
-    height: 28px;
+    max-width: 40px;
+    max-height: 40px;
     background: transparent;
     transition: background 300ms;
     border: 1px solid transparent;
     box-sizing: border-box;
     border-radius: 50%;
+
+    @media (max-width: 1024px) {
+      max-width: 34px;
+      max-height: 34px;
+    }
+
+    @media (max-width: 768px) {
+      max-width: 26px;
+      max-height: 26px;
+    }
   }
   &:hover {
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--color-text);
   }
   &:hover:before {
     background: rgba(0, 0, 0, 0.04);
@@ -34,17 +44,17 @@ const StyledDiv = styled.div`
 
   &.today {
     &:before {
-      border: 1px solid #1677ff;
+      border: 1px solid var(--color-primary);
     }
   }
 
   &.selectedDate {
     color: #fff;
     &:before {
-      background: #1677ff;
+      background: var(--color-primary);
     }
     &:hover:before {
-      background: #1677ff;
+      background: var(--color-primary);
       opacity: 0.8;
     }
   }
@@ -52,10 +62,10 @@ const StyledDiv = styled.div`
   &.marked {
     color: #fff;
     &:before {
-      background: #ff4d4f;
+      background: var(--color-error);
     }
     &:hover:before {
-      background: #ff4d4f;
+      background: var(--color-error);
       opacity: 0.8;
     }
   }
@@ -169,9 +179,9 @@ const MiniCalendar = (props: MiniCalendarProps) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-[1000px]">
-      <div className="w-[300px] border border-solid rounded-lg">
-        <div className="p-2 flex justify-center items-center border-b">
+    <div className="flex flex-col justify-center items-center">
+      <div className="xl:w-[900px] lg:w-[700px] md:w-[500px] sm:w-[300px] w-[280px] border border-solid rounded-lg">
+        <div className="xl:p-4 lg:p-3 p-2 flex justify-center items-center border-b">
           <Select
             value={selectedYear}
             onChange={handleYearChange}
@@ -181,13 +191,12 @@ const MiniCalendar = (props: MiniCalendarProps) => {
             }))}
           />
           <div
-            className="w-8 flex justify-center items-center cursor-pointer"
+            className="xl:w-12 xl:text-2xl lg:w-10 lg:text-xl md:w-8 md:text-lg w-6 sm:text-base text-sm text-[#9195a3] flex justify-center items-center cursor-pointer"
             onClick={handlePrevMonth}
           >
             &lt;
           </div>
           <Select
-            className="!w-[70px]"
             value={selectedMonth}
             onChange={handleMonthChange}
             options={months.map((item) => ({
@@ -196,14 +205,14 @@ const MiniCalendar = (props: MiniCalendarProps) => {
             }))}
           />
           <div
-            className="w-8 flex justify-center items-center cursor-pointer"
+            className="xl:w-12 xl:text-2xl lg:w-10 lg:text-xl md:w-8 md:text-lg w-6 sm:text-base text-sm text-[#9195a3] flex justify-center items-center cursor-pointer"
             onClick={handleNextMonth}
           >
             &gt;
           </div>
         </div>
         <div>
-          <div className="flex h-[30px] text-sm">
+          <div className="flex xl:h-[54px] xl:text-2xl lg:h-12 lg:text-xl md:h-10 md:text-lg h-8 text-base">
             {weekDays.map((item) => {
               return (
                 <div
@@ -226,13 +235,15 @@ const MiniCalendar = (props: MiniCalendarProps) => {
                   return (
                     <StyledDiv
                       key={`${index}-${i}`}
-                      className={`flex-1 flex justify-center items-center h-[30px] ${isMarked ? 'marked' : ''} ${item.isSame(dayjs(), 'date') ? 'today' : ''} ${selectedDate && selectedDate.isSame(item, 'date') && isCurrMonth ? 'selectedDate' : ''} ${isCurrMonth ? 'cursor-pointer' : 'disabled'}`}
+                      className={`flex-1 flex justify-center items-center xl:h-[54px] lg:h-12 md:h-10 h-8 ${isMarked && isCurrMonth ? 'marked' : ''} ${item.isSame(dayjs(), 'date') ? 'today' : ''} ${selectedDate && selectedDate.isSame(item, 'date') && isCurrMonth ? 'selectedDate' : ''} ${isCurrMonth ? 'cursor-pointer' : 'disabled'}`}
                       title={item.format(FORMAT)}
                       onClick={() => {
                         handleClick(item);
                       }}
                     >
-                      <div className="relative z-1">{item.format('D')}</div>
+                      <div className="relative z-1 xl:text-2xl lg:text-xl md:text-lg sm:text-base text-sm">
+                        {item.format('D')}
+                      </div>
                     </StyledDiv>
                   );
                 })}
@@ -242,7 +253,7 @@ const MiniCalendar = (props: MiniCalendarProps) => {
         </div>
       </div>
       {selectedDate ? (
-        <div className="mt-3">
+        <div className="mt-3 xl:text-2xl lg:text-xl md:text-lg sm:text-base">
           <div>当前选择的日期是：{selectedDate.format(FORMAT)}</div>
           {markedInfos[selectedDate.format(FORMAT)] && (
             <div className="mt-3">

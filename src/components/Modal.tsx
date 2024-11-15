@@ -16,7 +16,7 @@ const StyledOverlay = styled.div`
 
 const StyledDiv = styled.div`
   background: white;
-  width: 520px;
+  /* width: 520px; */
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -35,14 +35,14 @@ const StyledDiv = styled.div`
 `;
 
 const StyledHeader = styled.div`
-  padding: 16px;
+  /* padding: 16px; */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--color-border);
 `;
 const StyledTitle = styled.div`
-  color: rgba(0, 0, 0, 0.88);
+  color: var(--color-text);
   font-weight: 600;
 `;
 
@@ -55,15 +55,15 @@ const StyledClose = styled.button`
 `;
 
 const StyledContent = styled.div`
-  color: rgba(0, 0, 0, 0.88);
-  padding: 16px;
+  color: var(--color-text);
+  /* padding: 16px; */
 `;
 
 const StyledFooter = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 16px;
-  border-top: 1px solid #f0f0f0;
+  /* padding: 16px; */
+  border-top: 1px solid var(--color-border);
 `;
 
 const StyledButton = styled.button`
@@ -73,11 +73,11 @@ const StyledButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   margin-left: 8px;
-  color: rgba(0, 0, 0, 0.88);
+  color: var(--color-text);
   background-color: #fff;
 
   &.primary {
-    background-color: #1677ff;
+    background-color: var(--color-primary);
     color: white;
   }
 `;
@@ -115,13 +115,19 @@ const Modal = (props: ModalProps) => {
 
   return ReactDOM.createPortal(
     <StyledOverlay onClick={handleOverlayClick}>
-      <StyledDiv className={className} style={style} onClick={handleModalClick}>
-        <StyledHeader>
+      <StyledDiv
+        className={`xl:w-[520px] lg:w-[480px] md:w-[380px] sm:w-[300px] w-[260px] ${className}`}
+        style={style}
+        onClick={handleModalClick}
+      >
+        <StyledHeader className="xl:p-4 lg:p-3 md:p-2 p-1">
           <StyledTitle>{title}</StyledTitle>
           <StyledClose onClick={onCancel}>&times;</StyledClose>
         </StyledHeader>
-        <StyledContent>{children}</StyledContent>
-        <StyledFooter>
+        <StyledContent className="xl:p-4 lg:p-3 md:p-2 p-1">
+          {children}
+        </StyledContent>
+        <StyledFooter className="xl:p-4 lg:p-3 md:p-2 p-1">
           <StyledButton onClick={onCancel}>取消</StyledButton>
           <StyledButton className="primary" onClick={onOk}>
             确认
