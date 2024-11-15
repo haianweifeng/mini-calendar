@@ -92,7 +92,6 @@ const MiniCalendar = (props: MiniCalendarProps) => {
   const selectedMonth = useMemo(() => {
     return selectedDate.month() + 1;
   }, [selectedDate]);
-  // console.log(`selectedMonth: ${selectedMonth}`);
 
   const yearOptions = useMemo(() => {
     const options: number[] = [];
@@ -106,10 +105,8 @@ const MiniCalendar = (props: MiniCalendarProps) => {
     let day = 1;
     let currMonth = selectedMonth;
     const daysInMonth = selectedDate.daysInMonth();
-    // console.log(`daysInMonth: ${daysInMonth}`);
-    const firstDayOfMonth = selectedDate.startOf('month'); // 获取当月第一天
-    const firstDayOfWeek = firstDayOfMonth.day(); // 获取星期几，0 = Sunday, 1 = Monday, ..., 6 = Saturday
-    // console.log(`firstDayOfWeek: ${firstDayOfWeek}`);
+    const firstDayOfMonth = selectedDate.startOf('month');
+    const firstDayOfWeek = firstDayOfMonth.day();
     const weeks: Dayjs[][] = [];
     for (let i = 0; i < 6; i++) {
       const week: Dayjs[] = [];
@@ -136,7 +133,6 @@ const MiniCalendar = (props: MiniCalendarProps) => {
     }
     return weeks;
   }, [selectedDate, selectedYear, selectedMonth]);
-  //   console.log(calendar);
 
   const handleYearChange = useCallback(
     (val: string | number) => {
@@ -171,7 +167,6 @@ const MiniCalendar = (props: MiniCalendarProps) => {
   };
 
   const handleClick = (date: Dayjs) => {
-    // console.log(date);
     setSelectedDate(date);
     if (onClick) {
       onClick(date);

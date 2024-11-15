@@ -7,7 +7,7 @@ import Modal from '@/components/Modal';
 const FORMAT = 'YYYY-MM-DD';
 function App() {
   const [checked, setChecked] = useState<boolean>(true);
-  const [markedDays, setMarkedDays] = useState<Dayjs[]>([dayjs('2024-11-12')]);
+  const [markedDays, setMarkedDays] = useState<Dayjs[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [markedInfos, setMarkedInfos] = useState<Record<string, string>>({});
 
